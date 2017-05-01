@@ -1,0 +1,8 @@
+---
+vision_smart::long::interval: '42 0 1 * *'
+vision_smart::long::command: '/usr/local/sbin/smart-test.sh long >> /dev/null'
+vision_smart::long::user: 'root'
+
+vision_smart::short::interval: '42 22 * * *'
+vision_smart::short::command: '/usr/local/sbin/smart-test.sh short >> /dev/null'
+vision_smart::short::user: 'root'

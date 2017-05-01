@@ -1,0 +1,29 @@
+sudo: false
+language: ruby
+cache: bundler
+script:
+  - 'bundle exec rake $CHECK'
+matrix:
+  fast_finish: true
+  include:
+  - rvm: 2.1.9
+    env: PUPPET_VERSION="4.6.1" STRICT_VARIABLES="yes" CHECK="rubocop"
+    bundler_args: --without testing acceptance
+  - rvm: 2.1.9
+    env: PUPPET_VERSION="4.6.1" STRICT_VARIABLES="yes" CHECK="lint"
+    bundler_args: --without rubocop acceptance
+  - rvm: 2.1.9
+    env: PUPPET_VERSION="4.6.1" STRICT_VARIABLES="yes" CHECK="validate"
+    bundler_args: --without rubocop acceptance
+  - rvm: 2.1.9
+    env: PUPPET_VERSION="4.6.1" STRICT_VARIABLES="yes" CHECK="spec"
+    bundler_args: --without rubocop acceptance
+  - rvm: 2.1.9
+    env: PUPPET_VERSION="4.6.1" STRICT_VARIABLES="yes" CHECK="beaker"
+    bundler_args: --without rubocop
+    services: docker
+    sudo: required
+notifications:
+  email: false
+  slack:
+    secure: cJe9KizwFslOdTaDaDaz+Y+N4HzDBwsOyswnwUz+OTFBGOrdOAcZgg8QMvx0jGCQQvBoEP7motb9VDvEaSv+AWwaCPRB6/n/x+Kjp6d9zxKrU5fqsNcCdmMCmW8jIpMfnpvcE+Rj5RhXq6+JmolfnYYPgG868Vp4MktzZIgIWValu116abZc3dBMDBc5oXBFwH+0B1UhexpNz8xzZD7HVMazPv8nsA9+4shLo4K0QiY87jbPQ9vYiVtcvJ9m5AHJNFSTO3gVIsFAp4OBseUIyqCD5Pj+NmovWhpoCZnYp7T/9Kjkhl5Lfm3LiGAQ1jF0cFyW5K1Fwx5IEdo2zNquAJI2ym7NTlO8JFF2zLPw4uFApLMtCqha4edrQROEcLZpsJJqaBtCiAJVy2MPGOvaRy+B0bEcdd1aOlcsVOxDKAHg0XqWaIiFE50+6RyMvzAcs9QkWM2rjZhhQwjSu9MShnbwN+C7t9Pbe7aL2iMj75abxsfeZsfY8m9+2VXf3YoOz2AKJ9uQy63vxlMgzzzLG/aq+OY4J3RzQAZ8YH3BF9dSZ7J+IYQcL+YKEECSDkWaCDqjrEQlfQv+FHH4pAUfszlF70T6Fj1patqUnfgV7cH0v4e3j57gR0J5F87ohu3V+4zz/RmEBSBNsuzEKQLiSv5wubrIrwwHH8XYDNq4kyk=
