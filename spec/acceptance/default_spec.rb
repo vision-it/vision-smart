@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 describe 'vision_smart' do
   context 'with defaults' do
     it 'idempotentlies run' do
-      pp = <<-EOS
+      pp = <<-FILE
 
         # For Bash Lint
         package{'shellcheck':
@@ -13,7 +13,7 @@ describe 'vision_smart' do
         class { 'vision_smart':
         }
 
-      EOS
+      FILE
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
