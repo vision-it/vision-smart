@@ -1,9 +1,8 @@
 ---
 fixtures:
-    repositories:
-        stdlib:
-            ref: "4.24.0"
-            repo: "https://github.com/puppetlabs/puppetlabs-stdlib"
-
-    symlinks:
-        vision_smart: '#{source_dir}'
+  repositories:
+    stdlib:
+      ref: "v6.0.0"
+      repo: "https://github.com/puppetlabs/puppetlabs-stdlib"
+  symlinks:
+    vision_smart: '#{source_dir}'
