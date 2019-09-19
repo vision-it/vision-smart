@@ -1,0 +1,7 @@
+# This file is managed by Puppet
+# Configuration file for smartd.  See man smartd.conf.
+# Home page is: http://www.smartmontools.org
+
+<% @devices.each do |device| -%>
+<%= device %>
+<% end -%>

@@ -5,10 +5,13 @@ describe 'vision_smart' do
     it 'idempotentlies run' do
       pp = <<-FILE
 
-        # For Bash Lint
-        package{'shellcheck':
-         ensure => present,
-        }
+        # Just so that Puppet won't throw an error
+       if($facts[os][distro][codename] != 'jessie') {
+        file {['/etc/init.d/smartd']:
+          ensure  => present,
+          mode    => '0777',
+          content => 'case "$1" in *) exit 0 ;; esac'
+        }}
 
         class { 'vision_smart':
         }
@@ -16,7 +19,6 @@ describe 'vision_smart' do
       FILE
 
       apply_manifest(pp, catch_failures: true)
-      apply_manifest(pp, catch_changes: true)
     end
   end
 
@@ -26,36 +28,13 @@ describe 'vision_smart' do
     end
   end
 
-  context 'test-smart lint' do
-    describe package('shellcheck') do
-      it { is_expected.to be_installed }
-    end
-
-    describe command('/usr/bin/shellcheck /usr/local/sbin/smart-test.sh') do
-      its(:exit_status) { is_expected.to eq 0 }
-    end
-  end
-
   context 'files provisioned' do
-    describe file('/usr/local/sbin/smart-test.sh') do
+    describe file('/etc/smartd.conf') do
       it { is_expected.to be_file }
       it { is_expected.to be_owned_by 'root' }
-      it { is_expected.to be_mode 751 }
-      it { is_expected.to contain 'This file is managed by puppet' }
-    end
-
-    describe file('/etc/cron.d/smart-long-test') do
-      it { is_expected.to be_file }
-      it { is_expected.to be_owned_by 'root' }
-      it { is_expected.to be_mode 751 }
-      it { is_expected.to contain 'This file is managed by puppet' }
-    end
-
-    describe file('/etc/cron.d/smart-short-test') do
-      it { is_expected.to be_file }
-      it { is_expected.to be_owned_by 'root' }
-      it { is_expected.to be_mode 751 }
-      it { is_expected.to contain 'This file is managed by puppet' }
+      it { is_expected.to be_mode 644 }
+      it { is_expected.to contain 'This file is managed by Puppet' }
+      it { is_expected.to contain 'DEVICESCAN' }
     end
   end
 end
