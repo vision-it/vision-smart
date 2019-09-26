@@ -15,20 +15,28 @@
 
 class vision_smart (
 
+  Array[String] $devices = [],
+
 ) {
 
   package { 'smartmontools':
     ensure => present,
   }
 
-  file { '/usr/local/sbin/smart-test.sh':
-    ensure => present,
-    owner  => 'root',
-    mode   => '0751',
-    source => 'puppet:///modules/vision_smart/smart-test.sh',
+  file { '/etc/smartd.conf':
+    ensure  => present,
+    owner   => 'root',
+    mode    => '0644',
+    content => template('vision_smart/smartd.conf.erb'),
+    require => Package['smartmontools'],
   }
 
-  contain ::vision_smart::short
-  contain ::vision_smart::long
+  service { 'smartd':
+    ensure     => running,
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
+    subscribe  => File['/etc/smartd.conf'],
+  }
 
 }
