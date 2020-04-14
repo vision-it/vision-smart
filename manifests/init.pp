@@ -4,13 +4,7 @@
 # Parameters
 # ----------
 #
-# @param monitoring_class Handles monitoring specific configuration
-#
-# Examples
-# --------
-#
-# @example
-# contain ::vision_smart
+# @param devices List of SMART managed devices
 #
 
 class vision_smart (
